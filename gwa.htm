@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="gwa.css">
+<title>GWA Calculator</title>
+
+
+</head>
+<body>
+    <h1>GWA Calculator</h1>
+    <div id="calculator">
+        <div class="input-group">
+            <label class="input-label" for="subject-count-input">Number of Subjects:</label>
+            <input type="number" class="input-field" id="subject-count-input">
+        </div>
+        <div id="subjects-container"></div>
+        <button id="calculate-btn">Calculate</button>
+        <div id="result"></div>
+    </div>
+<script>
+
+document.getElementById('subject-count-input').addEventListener('change', function() {
+    var subjectCount = this.value;
+    var subjectsContainer = document.getElementById('subjects-container');
+    subjectsContainer.innerHTML = "";
+
+    for (var i = 1; i <= subjectCount; i++) {
+        var subjectRow = document.createElement('div');
+        subjectRow.classList.add('input-group', 'subject-row');
+
+        var subjectLabel = document.createElement('label');
+        subjectLabel.classList.add('input-label');
+        subjectLabel.textContent = 'Subject ' + i + ':';
+        subjectRow.appendChild(subjectLabel);
+
+        var subjectContainer = document.createElement('div');
+        subjectContainer.classList.add('subject-container');
+
+        var unitInput = document.createElement('input');
+        unitInput.type = 'number';
+        unitInput.classList.add('input-field');
+        unitInput.placeholder = 'Units';
+        subjectContainer.appendChild(unitInput);
+
+        var gradeInput = document.createElement('input');
+        gradeInput.type = 'number';
+        gradeInput.step = '0.01';
+        gradeInput.classList.add('input-field');
+        gradeInput.placeholder = 'Grade';
+        subjectContainer.appendChild(gradeInput);
+
+        subjectRow.appendChild(subjectContainer);
+
+        subjectsContainer.appendChild(subjectRow);
+    }
+});
+
+document.getElementById('calculate-btn').addEventListener('click', function() {
+    var subjectsContainer = document.getElementById('subjects-container');
+    var subjectRows = subjectsContainer.getElementsByClassName('subject-row');
+
+    var totalUnits = 0;
+    var totalGrades = 0;
+
+    for (var i = 0; i < subjectRows.length; i++) {
+        var unitInput = subjectRows[i].querySelector('.input-field:first-child');
+        var gradeInput = subjectRows[i].querySelector('.input-field:last-child');
+
+        if (unitInput.value && gradeInput.value) {
+            totalUnits += parseFloat(unitInput.value);
+            totalGrades += parseFloat(unitInput.value) * parseFloat(gradeInput.value);
+        }
+    }
+
+    var gwa = totalGrades / totalUnits;
+    document.getElementById('result').innerHTML = "GWA: " + gwa.toFixed(2);
+});
+
+</script>
+
+</body>
+</html>
